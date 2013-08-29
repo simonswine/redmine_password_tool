@@ -1,0 +1,13 @@
+en:
+  ##  Allgemein
+  label_pt_passwords: Passwords
+  label_pt_password:  password
+  label_pt_select: Select
+  label_pt_template: Template
+
+  ## Settings
+
+  ## Password Instances
+  label_pt_passwort_instance_new: New password entry
+
+

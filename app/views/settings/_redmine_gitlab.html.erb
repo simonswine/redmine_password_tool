@@ -1,0 +1,35 @@
+<%= stylesheet_link_tag('application', :plugin => 'redmine_gitlab')%>
+
+<br/>
+<div class="tabular settings">
+  <h3><%= l(:label_gitlab_settings)%></h3>
+  <p>
+    <label><%= l(:label_gitlab_http_base)%></label>
+    <%= text_field_tag("settings[gitlab_http_base]", @settings['gitlab_http_base'], :size => 40) %>
+  </p>
+  <p>
+    <label><%= l(:label_gitlab_ssh_user)%></label>
+    <%= text_field_tag("settings[gitlab_ssh_user]", @settings['gitlab_ssh_user'], :size => 40) %>
+  </p>
+  <p>
+    <label><%= l(:label_gitlab_ssh_host)%></label>
+    <%= text_field_tag("settings[gitlab_ssh_host]", @settings['gitlab_ssh_host'], :size => 40) %>
+  </p>
+  <p>
+    <label><%= l(:label_gitlab_repo_path)%></label>
+    <%= text_field_tag("settings[gitlab_repo_path]", @settings['gitlab_repo_path'], :size => 40) %>
+  </p>
+  <p>
+    <label><%= l(:label_gitlab_url_show)%></label>
+    <%= select_tag("settings[gitlab_url_show]", options_for_select([[l(:general_text_yes), 'true'], [l(:general_text_no), 'false']], @settings['gitlab_url_show'])) %>
+  </p>
+  <p>
+    <label><%= l(:label_gitlab_ssh_show)%></label>
+    <%= select_tag("settings[gitlab_ssh_show]", options_for_select([[l(:general_text_yes), 'true'], [l(:general_text_no), 'false']], @settings['gitlab_ssh_show'])) %>
+  </p>
+  <p>
+    <label><%= l(:label_gitlab_ssl_show)%></label>
+    <%= select_tag("settings[gitlab_ssl_show]", options_for_select([[l(:general_text_yes), 'true'], [l(:general_text_no), 'false']], @settings['gitlab_ssl_show'])) %>
+  </p>
+</div>
+

@@ -1,0 +1,3 @@
+api.password_template do
+  api.id @password_template.id
+end
