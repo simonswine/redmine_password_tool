@@ -1,22 +1,10 @@
 <h2><%=l(:label_pt_passwort_instance_new)%></h2>
 
-<%= javascript_include_tag('jquery.dform-1.1.0.min.js', :plugin => 'redmine_password_tool') %>
-<%= javascript_include_tag('password_tool.js', :plugin => 'redmine_password_tool') %>
+<%= @template.to_s  %>
 
+<%= form_tag url_for(:controller => 'password_instances', :action => 'new'), :id => "password_template_form"  do %>
+    <%= render :partial => 'form' %>
+    <%= submit_tag l(:button_create) %>
+<% end %>
 
-<div class="box tabular">
-    <%#= @templates %>
-    <form id="password_template_form">
-        <p>
-        <label for="password_template_id"><%=l(:label_pt_template)%></label>
-        <select id="password_template_id" name="password_instance[passwort_template_id]" onchange="updatePasswordInstanceFrom(this)">
-          <option value="0">&lt;<%=l(:label_pt_select)%>&gt;</option>
-
-          <% @templates.each do |template| %>
-              <option value="<%= template.id %>"><%= template.name%></option>
-          <% end %>
-        </select>
-        </p>
-    </form>
-</div>
-<%= submit_tag l(:button_create) %>
+<%# <form action="<%=  " id="password_template_form" method="post">   %>

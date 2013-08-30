@@ -4,6 +4,7 @@ en:
   label_pt_password:  password
   label_pt_select: Select
   label_pt_template: Template
+  label_pt_name: Name
 
   ## Settings
 

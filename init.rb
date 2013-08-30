@@ -24,11 +24,12 @@ Redmine::Plugin.register :redmine_password_tool do
     permission :pt_read,   :password_instances => :index
     permission :pt_modify, :password_instances => :set
   end
-  
-  
-  
-  
+
+
+
 end
 
-
-
+# Include plugins javascript
+class PasswordToolJavascriptIncludes < Redmine::Hook::ViewListener
+  render_on :view_layouts_base_html_head, :partial => 'password_tool'
+end

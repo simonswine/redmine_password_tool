@@ -3,3 +3,29 @@
 </div>
 
 <h2><%=l(:label_pt_passwords)%></h2>
+
+<%#= @password_instances %>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead><tr>
+      <th><%=l(:label_pt_name)%></th>
+      <th><%=l(:label_pt_template)%></th>
+      <th><%=l(:field_created_on)%></th>
+      <th></th>
+    </tr></thead>
+    <tbody>
+    <% @password_instances.each do |pw_instance| %>
+        <tr class="<%= cycle("odd", "even") %> <%= 0 > 0 ? "idnt idnt-0" : nil %>">
+          <td class="name"><%= pw_instance.name %></td>
+          <td><%= pw_instance.password_template.name %></td>
+          <td align="center"></td>
+          <td class="buttons">
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% html_title(l(:label_project_plural)) -%>
