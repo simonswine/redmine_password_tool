@@ -2,36 +2,71 @@
 class PasswordInstancesController < ApplicationController
   unloadable
 
-  before_filter :find_project
-  
-  def index
+  include PasswordInstancesHelper
 
-    @password_instances = PasswordInstance.all #.find(project_id: @project.id)
+
+  before_filter :find_project
+  before_filter :find_password_instance, :except => [ :index, :new, :create]
+  before_filter :find_password_instances, :only => [ :index, :new, :create ]
+
+
+  def index
 
   end
 
   def set
   end
 
+
+  # Show @password_instance
+  def show
+
+  end
+
+  # Edit @password_instance
+  def edit
+
+  end
+
+  # Delete @password_instance
+  def destroy
+    @password_instance.destroy
+    respond_to do |format|
+      format.html { redirect_to action: 'index' }
+      format.api  { render_api_ok }
+    end
+  end
+
+  def create
+
+    @password_instance = PasswordInstance.new
+
+    password_instance_params(params)
+
+    if @password_instance.save
+      # Save succeed
+      respond_to do |format|
+        format.html {
+          flash[:notice] = l(:notice_successful_create)
+          redirect_to action: 'index'
+        }
+        format.api  { redirect_to action: 'index' }
+      end
+    else
+      # Validation error
+      respond_to do |format|
+        format.html { render :action => 'new'}
+        format.api  { render_validation_errors(@password_instance) }
+      end
+    end
+  end
+
+
+
+
   def new
 
-    if params.has_key? "commit"
 
-      # Check sent template id
-      @template = PasswordTemplate.find_by_id(params[:passwort_template_id])
-
-      # TODO Do save better
-      @password_instance = PasswordInstance.new()
-      @password_instance.project = @project
-      @password_instance.data = JSON.generate(params[:data])
-      @password_instance.password_template = @template
-      @password_instance.name = params[:name]
-
-      if @password_instance.save
-        params={}
-      end
-
-    end
 
   end
 

@@ -1,9 +1,6 @@
 # encoding: utf-8
 require 'redmine'
 
-# send patches
-#require_dependency 'project_patch'
-
 Redmine::Plugin.register :redmine_password_tool do
   name 'Redmine Passwort Verwaltung'
   author 'Christian Simon'
@@ -18,7 +15,7 @@ Redmine::Plugin.register :redmine_password_tool do
             }
 
   # Menüeintrag bei Projekten
-  menu :project_menu, :password_instances, { :controller => 'password_instances', :action => 'index' }, :caption => 'Passwörter',  :after => :wiki, :param => :id
+  menu :project_menu, :password_instances, { :controller => 'password_instances', :action => 'index' }, :after => :wiki, :param => :id
 
   project_module :password_instances do
     permission :pt_read,   :password_instances => :index

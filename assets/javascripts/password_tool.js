@@ -10,8 +10,7 @@ function changedPasswordInstanceTemplate(select){
         form.dform('../../../password_templates/'+select.value+'/form.js',updatePasswordInstanceForm);
     }
     else {
-        /* disable name text input */
-        form.find("input#name").attr("disabled",true);
+        resetPasswordInstanceForm(true)
     }
 }
 
@@ -23,12 +22,24 @@ function initPasswordInstanceForm(data){
 
 }
 
+function resetPasswordInstanceForm(value){
+
+    /* disable name text input */
+    form.find("input#name").attr("disabled",value);
+    form.find("input#name").val("")
+
+    /* disable reset parent select */
+    form.find("select#password_instance_parent_id").attr("disabled",value);
+    form.find("select#password_instance_parent_id option").removeAttr('selected');
+    form.find("select#password_instance_parent_id option[value='']").attr('selected',true);
+
+}
+
 function updatePasswordInstanceForm(data) {
 
     form = $("#password_template_form")
 
-    /* enable name text input */
-    form.find("input#name").attr("disabled",false);
+    resetPasswordInstanceForm(false)
 
     /* Move dynamic form to the right place */
     div_dyn = form.children(".ui-dform-div-main").first()

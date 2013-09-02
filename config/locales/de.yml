@@ -1,10 +1,21 @@
 de:
   ##  Allgemein
+  label_password_instances: Passwörter
   label_pt_passwords: Passwörter
   label_pt_password:  Passwort
   label_pt_select: Auswählen
+  label_pt_root: Wurzel
   label_pt_template: Vorlage
   label_pt_name: Bezeichnung
+  label_pt_passwordtool: Passwort Verwaltung
+  label_pt_data: Inhalt
+  label_pt_parent: "Unterpasswort von:"
+
+  text_pt_instance_destroy_warning: "Sind sie sicher, dass der Passwort-Datensatz '%{value}' gelöscht werden soll?"
+
+  ## Permissions
+  permission_pt_read: Lese Passwort-Datensätze
+  permission_pt_modify: Erstelle/Modifiziere/Lösche  Passwort-Datensätze
 
   ## Settings
 

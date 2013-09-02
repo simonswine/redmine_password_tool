@@ -1,0 +1,2 @@
+module GitlabConnectionsHelper
+end

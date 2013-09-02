@@ -1,9 +1,14 @@
 <%# error_messages_for 'user' %>
+<%= error_messages_for 'password_instance' %>
 
 <div class="box tabular">
   <p>
     <label for="password_template_id"><%=l(:label_pt_template)%><span class="required"> *</span></label>
-    <%= select_tag(:passwort_template_id, options_for_select(PasswordTemplate.template_options_for_form,params[:passwort_template_id]),:onchange => "changedPasswordInstanceTemplate(this)") %>
+    <%= select_tag(:password_template_id, options_for_select(PasswordTemplate.template_options_for_form,params[:password_template_id]),:onchange => "changedPasswordInstanceTemplate(this)") %>
+  </p>
+  <p>
+    <%= label("password_instance", :parent_id, l(:label_pt_parent)) %>
+    <%= parent_password_instance_select_tag(@password_instance) %>
   </p>
   <p>
     <label for="name"><%=l(:label_pt_name)%><span class="required"> *</span></label>
@@ -11,10 +16,10 @@
   </p>
 </div>
 
-<% if @template %>
+<% if @password_instance %>
 <script type="text/javascript">
     $(document).ready(function() {
-        initPasswordInstanceForm(<%= @template.schema_obj.form_json(params[:data]).html_safe %>)
+        initPasswordInstanceForm(<%= @password_instance.password_template.schema_obj.form_json(params[:data]).html_safe %>)
     });
 </script>
 <% end %>

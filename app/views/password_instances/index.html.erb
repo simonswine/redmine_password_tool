@@ -11,21 +11,28 @@
     <thead><tr>
       <th><%=l(:label_pt_name)%></th>
       <th><%=l(:label_pt_template)%></th>
+      <th><%=l(:label_pt_data) %></th>
+      <th><%=l(:field_updated_on)%></th>
       <th><%=l(:field_created_on)%></th>
       <th></th>
     </tr></thead>
     <tbody>
-    <% @password_instances.each do |pw_instance| %>
-        <tr class="<%= cycle("odd", "even") %> <%= 0 > 0 ? "idnt idnt-0" : nil %>">
-          <td class="name"><%= pw_instance.name %></td>
+    <% PasswordInstance.password_instance_tree(@password_instances) do |pw_instance, level| %>
+        <tr class="<%= cycle("odd", "even") %> <%= pw_instance.css_classes %> <%= level > 0 ? "idnt idnt-#{level}" : nil %>">
+          <td class="name"><span><%= link_to pw_instance.name, { controller: "password_instances", action:"show", password_instance_id: pw_instance } %></span></td>
           <td><%= pw_instance.password_template.name %></td>
-          <td align="center"></td>
+          <td><pre><%#= pw_instance.data_json%></pre></td>
+          <td align="center"><%= format_time(pw_instance.updated_on) %></td>
+          <td align="center"><%= format_time(pw_instance.created_on) %></td>
           <td class="buttons">
+            <%= link_to(l(:button_edit), { controller: "password_instances", action:"edit", password_instance_id: pw_instance}, :method => :put, :class => 'icon icon-edit') %>
+            <%= link_to(l(:button_delete), { controller: "password_instances", action:"destroy", password_instance_id: pw_instance}, :method => :delete, :class => 'icon icon-del', :confirm => l(:text_pt_instance_destroy_warning,"#{pw_instance.name} (#{pw_instance.password_template.name})")) %>
           </td>
         </tr>
     <% end %>
     </tbody>
   </table>
 </div>
+<%=  %>
 
 <% html_title(l(:label_project_plural)) -%>

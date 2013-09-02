@@ -1,6 +1,11 @@
 RedmineApp::Application.routes.draw do
-  get 'projects/:id/password_tool/', :controller => 'password_instances', :action => 'index'
-  match 'projects/:id/password_tool/new', :to => 'password_instances#new', :via => [:get, :post], :as => 'new_password_instance'
+  match 'projects/:id/password_tool', :to => 'password_instances#index', :via => [:get]
+  match 'projects/:id/password_tool/new', :to => 'password_instances#new', :via => [:get]
+  match 'projects/:id/password_tool', :to => 'password_instances#create', :via => [:post]
+
+  match 'projects/:id/password_tool/:password_instance_id', :to => 'password_instances#destroy', :via => [:delete]
+  match 'projects/:id/password_tool/:password_instance_id', :to => 'password_instances#edit', :via => [:put]
+  match 'projects/:id/password_tool/:password_instance_id', :to => 'password_instances#show', :via => [:get]
 
 
   #get '/', :controller => 'password_templates' #, :action => 'index'

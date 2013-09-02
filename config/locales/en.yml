@@ -1,10 +1,21 @@
 en:
   ##  Allgemein
+  label_password_instances: Passwords
   label_pt_passwords: Passwords
   label_pt_password:  password
   label_pt_select: Select
+  label_pt_root: Root
   label_pt_template: Template
   label_pt_name: Name
+  label_pt_passwordtool: Password Tool
+  label_pt_data: Content
+  label_pt_parent: Parent password entry
+
+  text_pt_instance_destroy_warning: "Are you sure that you want to delete the password entry '%{value}'?"
+
+  ## Permissions
+  permission_pt_read: View password entries
+  permission_pt_modify: Create/Update/Delete password entries
 
   ## Settings
 
