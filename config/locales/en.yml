@@ -13,6 +13,9 @@ en:
 
   text_pt_instance_destroy_warning: "Are you sure that you want to delete the password entry '%{value}'?"
 
+  label_pt_show_all: "Show all"
+  label_pt_hide_all: "Hide all"
+
   ## Permissions
   permission_pt_read: View password entries
   permission_pt_modify: Create/Update/Delete password entries

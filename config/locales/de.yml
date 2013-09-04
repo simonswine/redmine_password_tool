@@ -13,6 +13,9 @@ de:
 
   text_pt_instance_destroy_warning: "Sind sie sicher, dass der Passwort-Datensatz '%{value}' gelöscht werden soll?"
 
+  label_pt_show_all: "Zeige alle an"
+  label_pt_hide_all: "Verstecke alle"
+
   ## Permissions
   permission_pt_read: Lese Passwort-Datensätze
   permission_pt_modify: Erstelle/Modifiziere/Lösche  Passwort-Datensätze

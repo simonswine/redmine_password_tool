@@ -1,13 +1,27 @@
 <div class="contextual">
   <%= link_to l(:label_pt_passwort_instance_new), { controller: "password_instances", action: "new" }, class: 'icon icon-add' %>
+  <%= link_to l(:label_pt_show_all), "#", onclick:"showPasswordInstanceAllContent()", class: 'icon icon-unlock' %>
+  <%= link_to l(:label_pt_hide_all), "#", onclick:"hidePasswordInstanceAllContent()", class: 'icon icon-lock' %>
 </div>
 
 <h2><%=l(:label_pt_passwords)%></h2>
 
+<%# Register JS Event Listener -%>
+<%= javascript_tag do -%>
+    // Listen to show/hide events
+    $(document).ready(function() {
+
+        $('a.pw-hide').click(togglePasswordInstanceContent);
+        $('a.pw-show').click(togglePasswordInstanceContent);
+
+    });
+<% end -%>
+
+
 <%#= @password_instances %>
 
 <div class="autoscroll">
-  <table class="list">
+  <table class="list pw-table">
     <thead><tr>
       <th><%=l(:label_pt_name)%></th>
       <th><%=l(:label_pt_template)%></th>
@@ -21,7 +35,10 @@
         <tr class="<%= cycle("odd", "even") %> <%= pw_instance.css_classes %> <%= level > 0 ? "idnt idnt-#{level}" : nil %>">
           <td class="name"><span><%= link_to pw_instance.name, { controller: "password_instances", action:"show", password_instance_id: pw_instance } %></span></td>
           <td><%= pw_instance.password_template.name %></td>
-          <td><pre><%#= pw_instance.data_json%></pre></td>
+          <td width="500px">
+            <%= link_to(l(:button_show), "##{pw_instance.id}", :class => 'icon icon-unlock pw-show') %>
+            <%= link_to(l(:button_hide), "##{pw_instance.id}", :style => 'display:none;', :class => 'icon icon-lock pw-hide') %>
+          </td>
           <td align="center"><%= format_time(pw_instance.updated_on) %></td>
           <td align="center"><%= format_time(pw_instance.created_on) %></td>
           <td class="buttons">

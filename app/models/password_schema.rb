@@ -49,7 +49,7 @@ class PasswordSchema
     JSON.generate(@schema)
   end
 
-  def form_json(data=nil)
+  def data_schema(data=nil)
 
     temp_schema = PasswordSchema.new(export_json)
 
@@ -61,15 +61,22 @@ class PasswordSchema
     # Pre-/Postfix Names
     temp_schema.pre_postfix_names("data[","]")
 
+    #
+    temp_schema.schema
+  end
 
+  def data_schema_json(data=nil)
+    JSON.generate(data_schema(data))
+  end
+
+  def form_json(data=nil)
     dform = {
           "html" => [
               "type" => "div",
               "class" => "ui-dform-div-main",
-              "html" => temp_schema.schema,
+              "html" => data_schema(data),
           ]}
     JSON.generate(dform)
-
   end
 
   def append_data(data)

@@ -32,6 +32,11 @@ class PasswordInstance < ActiveRecord::Base
     JSON.pretty_generate(my_data)
   end
 
+  # Get json tree of data and schema
+  def data_schema_json
+    password_template.schema_obj.data_schema_json(JSON.parse(data_plain))
+  end
+
 
 
   # Recalculates all lft and rgt values based on password instances name

@@ -23,6 +23,14 @@ class PasswordInstancesController < ApplicationController
 
   end
 
+  # Show @password_instance's data_schema
+  def data_schema
+
+
+
+  end
+
+
   # Edit @password_instance
   def edit
 
