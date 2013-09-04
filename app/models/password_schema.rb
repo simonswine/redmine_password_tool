@@ -35,7 +35,7 @@ class PasswordSchema
     return nil
   end
 
-  def cdslone
+  def clone
     return PasswordSchema.new(to_json)
   end
 
@@ -85,6 +85,44 @@ class PasswordSchema
         field['value'] = data[field['name']]
       end
     }
+  end
+
+  def validate_data(data)
+
+    my_output = {}
+    my_data = data
+    my_errors = []
+
+    if data.is_a? String
+      my_data=JSON.parse(data)
+    end
+
+    if not my_data.is_a? Hash
+      raise "Expected a hash"
+    end
+
+    @schema.each { |field|
+      if my_data.has_key?(field['name'])
+        # Exists
+
+
+
+
+        my_output[field['name']] = my_data[field['name']]
+      else
+        # Not exits
+
+        if field['validate']['required'] === true
+          my_errors.push("feld #{field['caption']} nicht vorhanden")
+        end
+
+
+      end
+    }
+
+
+    my_output
+
   end
 
 

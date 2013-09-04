@@ -37,3 +37,7 @@ rake db:drop db:create db:migrate db:test:load db:test:prepare redmine:plugins:m
 
 ```
 
+### Run test
+```
+rake redmine:plugins:test NAME=redmine_password_tool
+```

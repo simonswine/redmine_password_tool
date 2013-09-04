@@ -12,6 +12,10 @@ class PasswordInstance < ActiveRecord::Base
   # Only allow a-z0-9_
   validates_format_of :name, :with => /\A[a-z0-9\-_]+\Z/, :message => l(:validate_only_small_alphanumeric_underscore)
 
+  # Needs project_id
+  validates :project, :presence => true
+
+  # Valid
 
 
   # Nested set of instances order by name
@@ -28,8 +32,7 @@ class PasswordInstance < ActiveRecord::Base
 
   # Get json tree of data
   def data_json
-    my_data = JSON.parse(data_plain)
-    JSON.pretty_generate(my_data)
+    JSON.generate(JSON.parse(data_plain))
   end
 
   # Get json tree of data and schema
