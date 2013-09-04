@@ -1,129 +1,118 @@
-require 'json'
-
 class PasswordSchema
 
+  attr_reader :errors_data
+
+
+  # Separate to single fields an initialize them
   def initialize(schema)
+
+    # Convert json string
+    if schema.is_a? String
+      schema = JSON.parse(schema)
+    end
+
+    @fields = {}
+    @field_names = []
+
+    # Check if it is a array
     if schema.is_a? Array
-      @schema = schema
-    elsif schema.is_a? String
-      @schema = JSON.parse(schema)
-    else
-      @schema = []
+      schema.each{ |field|
+       field_obj = PasswordSchemaField.new(field)
+       if field_obj.valid?
+         @field_names.push field_obj.name
+         @fields[field_obj.name] = field_obj
+       else
+         # TODO: Handle wrong schemas
+       end
+      }
     end
   end
 
+  # Get validated schema
   def schema
-    @schema
-  end
+    output = []
+    @field_names.each { |key|
 
-  def field_names
+      field=@fields[key]
+      output.push field.to_hash
 
-    names = []
-    @schema.each { |field|
-      names.push(field['name'])
     }
-    names
+
+    output
 
   end
 
-  def field_by_name(name)
-    @schema.each { |field|
-      if name == field['name']
-        return field
+  def valid_data?       #
+
+    reset_values
+    result=true
+
+
+    val = @data_string
+
+    # Convert string to hash
+    if val.is_a? String
+      begin
+        val=JSON.parse(val)
+      rescue JSON::ParserError
+        @errors_data['__global'] << 'validate_json_unparseable'
       end
-    }
-    return nil
-  end
-
-  def clone
-    return PasswordSchema.new(to_json)
-  end
-
-  def pre_postfix_names(pre,post)
-    @schema.each { |field|
-      field['name']="#{pre}#{field['name']}#{post}"
-    }
-  end
-
-  def export_json
-    JSON.generate(@schema)
-  end
-
-  def data_schema(data=nil)
-
-    temp_schema = PasswordSchema.new(export_json)
-
-    # Use existing data
-    if data != nil
-      temp_schema.append_data(data)
     end
 
-    # Pre-/Postfix Names
-    temp_schema.pre_postfix_names("data[","]")
-
-    #
-    temp_schema.schema
-  end
-
-  def data_schema_json(data=nil)
-    JSON.generate(data_schema(data))
-  end
-
-  def form_json(data=nil)
-    dform = {
-          "html" => [
-              "type" => "div",
-              "class" => "ui-dform-div-main",
-              "html" => data_schema(data),
-          ]}
-    JSON.generate(dform)
-  end
-
-  def append_data(data)
-    @schema.each { |field|
-      if data.has_key?(field['name'])
-        field['value'] = data[field['name']]
-      end
-    }
-  end
-
-  def validate_data(data)
-
-    my_output = {}
-    my_data = data
-    my_errors = []
-
-    if data.is_a? String
-      my_data=JSON.parse(data)
-    end
-
-    if not my_data.is_a? Hash
-      raise "Expected a hash"
-    end
-
-    @schema.each { |field|
-      if my_data.has_key?(field['name'])
-        # Exists
-
-
-
-
-        my_output[field['name']] = my_data[field['name']]
-      else
-        # Not exits
-
-        if field['validate']['required'] === true
-          my_errors.push("feld #{field['caption']} nicht vorhanden")
+    # Check if hash
+    if val.is_a? Hash
+      @field_names.each { |key|
+        field=@fields[key]
+        if val.has_key? key
+          field.value = val[key]
         end
+      }
+    else
+      @errors_data['__global'] << 'validate_json_wrong_format'
+    end
 
+    # If error happend, pass data to fields
+    if @errors_data['__global'].length == 0
+      @field_names.each { |key|
+        field=@fields[key]
 
-      end
-    }
+        if not field.valid_data?
+          @errors_data[key] = field.errors_data
+          result = false
+        end
+      }
+    else
+      result=false
+    end
 
+    result
+  end
 
-    my_output
+  def data=(val)
+
+    @data_string = val
 
   end
 
+  def data
+    output = {}
+    @field_names.each { |key|
+      field=@fields[key]
+      if field.valid_data? and field.value != nil
+        output[key] = field.value
+      end
+    }
+    output
+  end
+
+  def reset_values
+
+    @errors_data = {}
+    @errors_data['__global'] = []
+
+    @field_names.each { |key|
+      @fields[key].value = nil
+    }
+  end
 
 end

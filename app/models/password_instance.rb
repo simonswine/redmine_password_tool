@@ -4,7 +4,8 @@ class PasswordInstance < ActiveRecord::Base
   belongs_to :password_template
   belongs_to :project
 
-  attr_encrypted :data_plain, :key => "test123", :attribute => 'data'
+  # TODO: Load key from file
+  attr_encrypted :data_plain, :key => "test123", :attribute => 'data_encrypted'
 
   # Unique names on project scope
   validates :name, :uniqueness => {:scope => :project_id}
@@ -15,8 +16,8 @@ class PasswordInstance < ActiveRecord::Base
   # Needs project_id
   validates :project, :presence => true
 
-  # Valid
-
+  # data validation
+  validate :validate_data
 
   # Nested set of instances order by name
   acts_as_nested_set :order => :name, :dependent => :destroy
@@ -30,9 +31,22 @@ class PasswordInstance < ActiveRecord::Base
     s
   end
 
-  # Get json tree of data
-  def data_json
-    JSON.generate(JSON.parse(data_plain))
+  # Get hash of data
+  def data
+    JSON.parse(data_plain)
+  end
+
+  def data=(val)
+    password_template.data=val
+  end
+
+  def validate_data
+
+    result = password_template.valid_data?
+    data_plain = password_template.data
+    if not result
+      errors.add(:data, password_template.errors_data.to_s)
+    end
   end
 
   # Get json tree of data and schema
@@ -62,6 +76,14 @@ class PasswordInstance < ActiveRecord::Base
     end
   end
 
-
+  def validate_data_plain_json_parseable
+    if data_plain.present?
+      begin
+        JSON.parser(data_plain)
+      rescue JSON::ParserError
+        errors.add(:data, "json_unparseable")
+      end
+    end
+  end
 
 end

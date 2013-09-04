@@ -57,6 +57,22 @@ class PasswordSchemaFieldTest < ActiveSupport::TestCase
 
   end
 
+  def test_ignore_non_existing_params
+
+    data = @@schema_simple.clone
+    data['not_existing'] = "test123
+"
+    field = PasswordSchemaField.new(data)
+
+    assert field.valid?
+    assert_equal field.to_hash, @@schema_simple
+    assert_equal field.name, @@schema_simple["name"]
+    assert_equal field.type, @@schema_simple["type"]
+    assert_equal field.caption, @@schema_simple["caption"]
+
+  end
+
+
 
   def test_not_valid_missing_name
 
@@ -93,6 +109,82 @@ class PasswordSchemaFieldTest < ActiveSupport::TestCase
     field = PasswordSchemaField.new(schema)
 
     assert (not field.valid?)
+
+  end
+
+  def test_validate_value_not_required
+
+    schema = @@schema_simple
+
+    field = PasswordSchemaField.new(schema)
+    field.value = ""
+    assert (field.valid_data?)
+
+    field.value = nil
+    assert (field.valid_data?)
+
+  end
+
+  def test_not_validate_value_required
+
+    schema = @@schema_require
+
+    field = PasswordSchemaField.new(schema)
+    field.value = ""
+    assert (not field.valid_data?)
+
+    field.value = nil
+    assert (not field.valid_data?)
+
+  end
+
+  def test_validate_value_email
+
+    schema = @@schema_simple.clone
+    schema["type"] = "email"
+
+    field = PasswordSchemaField.new(schema)
+    field.value = "simon@swine.de"
+
+    assert (field.valid_data?)
+
+  end
+
+  def test_not_validate_value_email
+
+    schema = @@schema_simple.clone
+    schema["type"] = "email"
+
+    field = PasswordSchemaField.new(schema)
+    field.value = "simonswine.de"
+
+    assert (not field.valid_data?)
+
+  end
+
+  def test_validate_value_url
+
+    schema = @@schema_simple.clone
+    schema["type"] = "url"
+
+    field = PasswordSchemaField.new(schema)
+    field.value = "htTp://www.giigle.de/testme12345.php"
+    assert (field.valid_data?)
+
+    field.value = "https://ssl.giigle.de/testme12345.php"
+    assert (field.valid_data?)
+
+  end
+
+  def test_not_validate_value_url
+
+    schema = @@schema_simple.clone
+    schema["type"] = "url"
+
+    field = PasswordSchemaField.new(schema)
+    field.value = "htt://asd.simonswine.de"
+
+    assert (not field.valid_data?)
 
   end
 
