@@ -9,6 +9,8 @@ class PasswordSchemaField
   attr_reader :errors_data
 
   @@allowed_types = ['text','password','url','email','number']
+  @@hash_fields = ['type','name','validate','caption','value']
+
 
   validates :name, :type, presence: true
   validates_format_of :name, :with => /\A[a-z0-9_]+\Z/, :message => "l(:validate_only_small_alphanumeric_underscore)"
@@ -54,11 +56,11 @@ class PasswordSchemaField
 
   def to_hash
     hash = {}
-    instance_variables.each {|var|
-      key=var.to_s
-      key[0] = ''
-      if not ["errors","validation_context"].include?(key)
-        hash[key] = instance_variable_get(var)
+    @@hash_fields.each {|key|
+      value = send key
+
+    if value != nil
+        hash[key] = value
       end
     }
     hash
@@ -117,7 +119,6 @@ class PasswordSchemaField
 
   # Special validator for urls addresses
   def value_url_valid?
-
     begin
       uri = URI.parse(value)
       uri = URI.parse("http://#{url}") if uri.scheme.nil?

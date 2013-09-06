@@ -9,7 +9,7 @@ class PasswordInstanceTest < ActiveSupport::TestCase
     {
       :name => "test_instance",
       :password_template_id => 1,
-      :data => '{"username":"username1","password":"password1"}',
+      :data_plain => '{"username":"username1","password":"password1","dbname":"database1"}',
       :project_id => 1,
     }.clone
   end
@@ -19,18 +19,25 @@ class PasswordInstanceTest < ActiveSupport::TestCase
 
     params = default_params
 
-    #TODO reenable
+    # TODO: reenable
 
     pi = PasswordInstance.new(params)
 
-    pi.save
-    #pi.reload
+    # Should validate
+    assert pi.save
 
+    # Reload from db
+    pi.reload
+
+    # Get template
     template = PasswordTemplate.find(1)
+    project = Project.find(1)
 
     assert_equal params[:name], pi.name
-    #assert_equal params[:data], pi.data
+    assert_equal JSON.parse(params[:data_plain]), pi.data
     assert_equal template.name, pi.password_template.name
+    assert_equal project, pi.project
+
 
   end
 
@@ -58,7 +65,7 @@ class PasswordInstanceTest < ActiveSupport::TestCase
   def test_not_create_unparseable_json_data
 
     params = default_params
-    params[:data] = '{"no":"json",}'
+    params[:data_plain] = '{"no":"json",}'
 
     pi = PasswordInstance.new(params)
 
@@ -69,7 +76,7 @@ class PasswordInstanceTest < ActiveSupport::TestCase
   def test_not_create_invalid_json_data
 
     params = default_params
-    params[:data] = '["not","wanted"]'
+    params[:data_plain] = '["not","wanted"]'
 
     pi = PasswordInstance.new(params)
 

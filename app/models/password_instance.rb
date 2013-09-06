@@ -22,6 +22,10 @@ class PasswordInstance < ActiveRecord::Base
   # Nested set of instances order by name
   acts_as_nested_set :order => :name, :dependent => :destroy
 
+
+  # Path to secrets file
+  @@secrets_file = File.expand_path(File.dirname(__FILE__) + "../../../config/password_tool_secret.yml")
+
   # Get classes for the password_instance tree
   def css_classes
     s = 'project'
@@ -37,24 +41,26 @@ class PasswordInstance < ActiveRecord::Base
   end
 
   def data=(val)
-    password_template.data=val
+    data_plain=JSON.generate(val)
   end
 
   def validate_data
 
-    result = password_template.valid_data?
-    data_plain = password_template.data
-    if not result
-      errors.add(:data, password_template.errors_data.to_s)
+    result = password_template.data_validate(data_plain)
+    if not (result['errors'].length == 1 and result['errors']['__global'].length == 0)
+      errors.add(:data_plain, result['errors'])
     end
   end
 
   # Get json tree of data and schema
   def data_schema_json
-    password_template.schema_obj.data_schema_json(JSON.parse(data_plain))
+    JSON.generate(data_schema)
   end
 
-
+  # Get tree of data and schema
+  def data_schema
+    password_template.schema_obj.data_schema(data_plain)
+  end
 
   # Recalculates all lft and rgt values based on password instances name
   def self.rebuild_tree!
@@ -84,6 +90,31 @@ class PasswordInstance < ActiveRecord::Base
         errors.add(:data, "json_unparseable")
       end
     end
+  end
+
+
+  def self.get_secret
+
+
+    parsed = begin
+      YAML.load(File.open(@@secrets_file
+                ))
+    rescue ArgumentError => e
+      puts "Could not parse YAML: #{e.message}"
+    end
+
+    "run"
+  end
+
+
+  def self.create_secret
+
+    puts "Generate new secret"
+
+    puts get_secret
+
+
+
   end
 
 end

@@ -3,6 +3,9 @@ module PasswordInstancesHelper
   # Find password_instance_ids
   def find_password_instance
     @password_instance = PasswordInstance.find(params[:password_instance_id])
+    if @password_instance.project != @project
+      render_404
+    end
   rescue ActiveRecord::RecordNotFound
     render_404
   end
@@ -42,18 +45,6 @@ module PasswordInstancesHelper
   end
 
 
-  def password_instance_params(params)
 
-    # add parameters
-    @password_instance.password_template = PasswordTemplate.find_by_id(params[:password_template_id])
-    @password_instance.name = params[:name]
-    @password_instance.data_plain = JSON.generate(params[:data])
-    @password_instance.project = @project
-
-    # add to parent
-    parent = PasswordInstance.find_by_id(params[:parent_id])
-    parent.children << @password_instance
-
-  end
 
 end

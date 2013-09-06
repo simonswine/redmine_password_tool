@@ -42,77 +42,136 @@ class PasswordSchema
 
   end
 
-  def valid_data?       #
+  def form_json(data=nil)
+
+    my_schema = data_schema(data)
+
+    my_schema.each { |field|
+      field['name'] = "data[#{field['name']}]"
+    }
+
+    dform = {
+    "html" => [
+    "type" => "div",
+    "class" => "ui-dform-div-main",
+    "html" => my_schema,
+    ]}
+    JSON.generate(dform)
+
+  end
+
+  def data_schema_json(data=nil)
+
+    JSON.generate(data_schema(data))
+
+  end
+
+  def data_schema (data=nil)
 
     reset_values
-    result=true
 
-
-    val = @data_string
-
-    # Convert string to hash
-    if val.is_a? String
-      begin
-        val=JSON.parse(val)
-      rescue JSON::ParserError
-        @errors_data['__global'] << 'validate_json_unparseable'
-      end
-    end
-
-    # Check if hash
-    if val.is_a? Hash
-      @field_names.each { |key|
-        field=@fields[key]
-        if val.has_key? key
-          field.value = val[key]
-        end
+    if  data != nil
+      params = {
+        'data' => data,
+        'errors' => {
+            '__global' => [],
+        },
       }
+      data_convert_json(params)
+
+      if params['errors']['__global'].length == 0
+        set_values (params['data'])
+      end
+
+      output = schema
+      reset_values
+      output
     else
-      @errors_data['__global'] << 'validate_json_wrong_format'
+      schema
     end
+
+
+  end
+
+  # Validate Input an pass errors and correct data
+  def data_validate (data)
+
+    params = {
+        'data' => data,
+        'errors' => {
+            '__global' => [],
+        },
+    }
+
+    reset_values
+
+    data_convert_json(params)
+
+
 
     # If error happend, pass data to fields
-    if @errors_data['__global'].length == 0
-      @field_names.each { |key|
-        field=@fields[key]
+    if params['errors']['__global'].length == 0
+      set_values (params['data'])
 
-        if not field.valid_data?
-          @errors_data[key] = field.errors_data
-          result = false
-        end
-      }
-    else
-      result=false
+      data_validate_fields(params['errors'])
     end
 
-    result
-  end
+    reset_values
 
-  def data=(val)
-
-    @data_string = val
+    params
 
   end
 
-  def data
-    output = {}
-    @field_names.each { |key|
-      field=@fields[key]
-      if field.valid_data? and field.value != nil
-        output[key] = field.value
-      end
-    }
-    output
-  end
 
+  private
+
+  # Reset value per field
   def reset_values
-
-    @errors_data = {}
-    @errors_data['__global'] = []
-
     @field_names.each { |key|
       @fields[key].value = nil
     }
   end
+
+  # Set value per field from hash
+  def set_values (data)
+    @field_names.each { |key|
+      field=@fields[key]
+      if data.has_key? key
+        field.value = data[key]
+      end
+    }
+  end
+
+  # Convert string to hash and check thats a hash
+  def data_convert_json(params)
+
+    # Convert string to hash
+    if params['data'].is_a? String
+      begin
+        params['data']=JSON.parse(params['data'])
+      rescue JSON::ParserError
+        params['errors']['__global'] << 'validate_json_unparseable'
+      end
+    end
+
+    # Check if data is a hash
+    if  not params['data'].is_a? Hash
+      params['errors']['__global'] << 'validate_json_wrong_format'
+    end
+
+  end
+
+  # Validate data per field
+  def data_validate_fields(errors)
+
+    @field_names.each { |key|
+      field=@fields[key]
+
+      if not field.valid_data?
+        errors[key] = field.errors_data
+      end
+    }
+  end
+
 
 end

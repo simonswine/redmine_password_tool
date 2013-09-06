@@ -9,6 +9,25 @@ class PasswordInstancesController < ApplicationController
   before_filter :find_password_instance, :except => [ :index, :new, :create]
   before_filter :find_password_instances, :only => [ :index, :new, :create ]
 
+  before_filter :authorize
+
+
+  def safe_params
+
+    output = {}
+
+    ["password_template_id","parent_id","name"].each { |key|
+
+      output[key] = params[key]
+
+    }
+    output['data_plain'] = JSON.generate(params['data'])
+
+
+    output
+
+  end
+
 
   def index
 
@@ -47,9 +66,12 @@ class PasswordInstancesController < ApplicationController
 
   def create
 
-    @password_instance = PasswordInstance.new
+    @password_instance = PasswordInstance.new(safe_params)
 
-    password_instance_params(params)
+    # add project
+    @password_instance.project = @project
+
+
 
     if @password_instance.save
       # Save succeed

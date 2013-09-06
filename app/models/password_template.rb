@@ -9,21 +9,11 @@ class PasswordTemplate < ActiveRecord::Base
     PasswordSchema.new(schema)
   end
 
-  def data
-    schema_obj.data
+  def data_validate(data)
+    schema_obj.data_validate(data)
   end
 
-  def data=(val)
-    schema_obj.data=(val)
-  end
 
-  def valid_data?
-    schema_obj.valid_data?
-  end
-
-  def errors_data
-    schema_obj.errors_data
-  end
 
   # Changes name key of schema adds prefix,suffix to name
   def self.change_name_keys(obj, prefix, suffix)

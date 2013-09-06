@@ -26,13 +26,13 @@ function resetPasswordInstanceForm(value) {
 
     /* disable name text input */
     form.find("input#name").attr("disabled", value);
-    form.find("input#name").val("");
-
     /* disable reset parent select */
     form.find("select#password_instance_parent_id").attr("disabled", value);
-    form.find("select#password_instance_parent_id option").removeAttr('selected');
-    form.find("select#password_instance_parent_id option[value='']").attr('selected', true);
-
+    if (value){
+        form.find("input#name").val("");
+        form.find("select#password_instance_parent_id option").removeAttr('selected');
+        form.find("select#password_instance_parent_id option[value='']").attr('selected', true);
+    }
 }
 
 function updatePasswordInstanceForm(data) {
@@ -92,9 +92,12 @@ function togglePasswordInstanceContent(event) {
 
         var pw_instance_id = parseInt($(this).attr("href").substring(1),10);
 
+        var pathname = window.location.pathname;
+
+
         // Get JSON data
         $.ajax({
-            url: "./password_tool/"+pw_instance_id+"/data_schema.js",
+            url: window.location.pathname +"/"+pw_instance_id+"/data_schema.js",
             context: $(this)
         }).done(function (data) {
                 // Add table

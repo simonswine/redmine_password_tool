@@ -1,10 +1,13 @@
 <div class="contextual">
-  <%= link_to l(:label_pt_passwort_instance_new), { controller: "password_instances", action: "new" }, class: 'icon icon-add' %>
+<% if User.current.allowed_to?({ controller: "password_instances", action: "new" },@project) -%>
+      <%= link_to l(:label_pt_passwort_instance_new), { controller: "password_instances", action: "new" }, class: 'icon icon-add' %>
+<% end -%>
   <%= link_to l(:label_pt_show_all), "#", onclick:"showPasswordInstanceAllContent()", class: 'icon icon-unlock' %>
   <%= link_to l(:label_pt_hide_all), "#", onclick:"hidePasswordInstanceAllContent()", class: 'icon icon-lock' %>
 </div>
 
 <h2><%=l(:label_pt_passwords)%></h2>
+
 
 <%# Register JS Event Listener -%>
 <%= javascript_tag do -%>
@@ -42,8 +45,12 @@
           <td align="center"><%= format_time(pw_instance.updated_on) %></td>
           <td align="center"><%= format_time(pw_instance.created_on) %></td>
           <td class="buttons">
-            <%= link_to(l(:button_edit), { controller: "password_instances", action:"edit", password_instance_id: pw_instance}, :method => :put, :class => 'icon icon-edit') %>
-            <%= link_to(l(:button_delete), { controller: "password_instances", action:"destroy", password_instance_id: pw_instance}, :method => :delete, :class => 'icon icon-del', :confirm => l(:text_pt_instance_destroy_warning,"#{pw_instance.name} (#{pw_instance.password_template.name})")) %>
+<% if User.current.allowed_to?({ controller: "password_instances", action: "new" },@project) -%>
+                <%= link_to(l(:button_edit), { controller: "password_instances", action:"edit", password_instance_id: pw_instance}, :method => :put, :class => 'icon icon-edit') %>
+<% end -%>
+<% if User.current.allowed_to?({ controller: "password_instances", action: "new" },@project) -%>
+                <%= link_to(l(:button_delete), { controller: "password_instances", action:"destroy", password_instance_id: pw_instance}, :method => :delete, :class => 'icon icon-del', :confirm => l(:text_pt_instance_destroy_warning,"#{pw_instance.name} (#{pw_instance.password_template.name})")) %>
+<% end -%>
           </td>
         </tr>
     <% end %>
