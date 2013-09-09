@@ -5,11 +5,11 @@ class PasswordInstancesController < ApplicationController
   include PasswordInstancesHelper
 
 
-  before_filter :find_project
-  before_filter :find_password_instance, :except => [ :index, :new, :create]
-  before_filter :find_password_instances, :only => [ :index, :new, :create ]
+  #before_filter :find_project
+  #before_filter :find_password_instance, :except => [ :index, :new, :create]
+  #before_filter :find_password_instances, :only => [ :index, :new, :create, :edit, :update ]
 
-  before_filter :authorize
+  #before_filter :authorize
 
 
   def safe_params
@@ -55,6 +55,16 @@ class PasswordInstancesController < ApplicationController
 
   end
 
+  def update
+    @password_instance.safe_attributes = params[:password_instance]
+    if request.put? and @password_instance.save
+      flash[:notice] = l(:notice_successful_update)
+      redirect_to action: 'index'
+    else
+      render :action => 'edit'
+    end
+  end
+
   # Delete @password_instance
   def destroy
     @password_instance.destroy
@@ -95,6 +105,8 @@ class PasswordInstancesController < ApplicationController
 
 
   def new
+
+    @password_instance = PasswordInstance.new
 
 
 

@@ -4,7 +4,7 @@ require 'redmine'
 Redmine::Plugin.register :redmine_password_tool do
   name 'Redmine Password Tool'
   author 'Christian Simon'
-  description 'Integriert eine Passwort Verwaltung ins Redmine'
+  description 'Integrates password management for Redmine projects'
   version '0.0.1'
   url 'http://www.former03.de'
 
@@ -18,7 +18,7 @@ Redmine::Plugin.register :redmine_password_tool do
 
   project_module :password_instances do
     permission :pt_read,   :password_instances => [:index, :show, :data_schema]
-    permission :pt_modify, :password_instances => [:create, :new, :destroy]
+    permission :pt_modify, :password_instances => [:create, :new, :destroy, :edit, :update]
   end
 
 

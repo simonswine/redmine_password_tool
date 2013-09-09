@@ -5,7 +5,7 @@ class PasswordInstance < ActiveRecord::Base
   belongs_to :project
 
   # TODO: Load key from file
-  attr_encrypted :data_plain, :key => "test123", :attribute => 'data_encrypted'
+  attr_encrypted :data_plain, :key => :get_secret, :attribute => 'data_encrypted'
 
   # Unique names on project scope
   validates :name, :uniqueness => {:scope => :project_id}
@@ -33,6 +33,10 @@ class PasswordInstance < ActiveRecord::Base
     s << ' child' if child?
     s << (leaf? ? ' leaf' : ' parent')
     s
+  end
+
+  def get_secret
+    PasswordInstance.get_secret
   end
 
   # Get hash of data
@@ -71,7 +75,7 @@ class PasswordInstance < ActiveRecord::Base
   end
 
   # Yields the given block for each password_instance with its level in the tree
-  def self.password_instance_tree(password_instances,&block)
+  def self.password_instance_tree(password_instances, &block)
     ancestors = []
     password_instances.sort_by(&:lft).each do |password_instance|
       while (ancestors.any? && !password_instance.is_descendant_of?(ancestors.last))
@@ -94,26 +98,46 @@ class PasswordInstance < ActiveRecord::Base
 
 
   def self.get_secret
-
-
-    parsed = begin
-      YAML.load(File.open(@@secrets_file
-                ))
-    rescue ArgumentError => e
-      puts "Could not parse YAML: #{e.message}"
-    end
-
-    "run"
+    YAML.load(File.open(@@secrets_file))['secret']
   end
 
 
   def self.create_secret
 
-    puts "Generate new secret"
+    # Check that no secrets exists
+    begin
+      secret = get_secret
+    rescue Exception => e
+      secret = nil
+    end
 
-    puts get_secret
+    if secret.nil?
+
+      if PasswordInstance.count > 0
+        # Already existing PasswordInstances
+
+        raise "Can't create secret, because there is at least a existing password entry"
+
+      else
+        # No instance exists
+        puts "Generate a secret key"
+
+        secret={
+            'secret' => SecureRandom.base64(128)
+        }
+
+        # Write file
+        File.write(@@secrets_file, secret.to_yaml)
+
+        # Only owner rights
+        File.chmod(0600, @@secrets_file)
+
+      end
 
 
+    else
+      raise "Secret already existing"
+    end
 
   end
 

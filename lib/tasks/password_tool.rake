@@ -8,7 +8,9 @@ END_DESC
 namespace :redmine do
   namespace :password_tool do
     task :create_secret do
+
       PasswordInstance.create_secret
+
     end
   end
 end

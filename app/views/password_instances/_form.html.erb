@@ -1,10 +1,12 @@
-<%# error_messages_for 'user' %>
 <%= error_messages_for 'password_instance' %>
+
+
+<pre><%= params %></pre>
 
 <div class="box tabular">
   <p>
     <label for="password_template_id"><%=l(:label_pt_template)%><span class="required"> *</span></label>
-    <%= select_tag(:password_template_id, options_for_select(PasswordTemplate.template_options_for_form,params[:password_template_id]),:onchange => "changedPasswordInstanceTemplate(this)") %>
+    <%= select_tag(:password_template_id, options_for_select(PasswordTemplate.template_options_for_form,@password_instance.password_template_id),:onchange => "changedPasswordInstanceTemplate(this)") %>
   </p>
   <p>
     <%= label("password_instance", :parent_id, l(:label_pt_parent)) %>
@@ -12,14 +14,14 @@
   </p>
   <p>
     <label for="name"><%=l(:label_pt_name)%><span class="required"> *</span></label>
-    <%= text_field_tag(:name,"",:disabled => true, :value => params['name']) %>
+    <%= text_field_tag(:name,"",:disabled => true, :value => @password_instance.name) %>
   </p>
 </div>
 
-<% if @password_instance %>
+<% if params[:action] == "create" or params[:action] == "edit" %>
 <script type="text/javascript">
     $(document).ready(function() {
-        initPasswordInstanceForm(<%= @password_instance.password_template.schema_obj.form_json(params[:data]).html_safe %>)
+    initPasswordInstanceForm(<%= @password_instance.password_template.schema_obj.form_json(@password_instance.data_plain).html_safe %>)
     });
 </script>
 <% end %>

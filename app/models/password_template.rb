@@ -5,6 +5,8 @@ class PasswordTemplate < ActiveRecord::Base
 
   has_many :password_instances, :dependent => :destroy
 
+  validates :name, presence: true, uniqueness: true
+
   def schema_obj
     PasswordSchema.new(schema)
   end
