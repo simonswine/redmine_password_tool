@@ -5,7 +5,7 @@ de:
   label_pt_password:  Passwort
   label_pt_select: Auswählen
   label_pt_root: Wurzel
-  label_pt_template: Vorlage
+  field_password_template: Vorlage
   label_pt_name: Bezeichnung
   label_pt_passwordtool: Passwort Verwaltung
   label_pt_data: Inhalt
@@ -23,6 +23,6 @@ de:
   ## Settings
 
   ## Password Instances
-  label_pt_passwort_instance_new: Neuer Passwort-Datensatz
+  label_password_instance_new: Neuer Passwort-Datensatz
 
 

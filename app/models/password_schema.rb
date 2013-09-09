@@ -47,7 +47,7 @@ class PasswordSchema
     my_schema = data_schema(data)
 
     my_schema.each { |field|
-      field['name'] = "data[#{field['name']}]"
+      field['name'] = "password_instance[data][#{field['name']}]"
     }
 
     dform = {

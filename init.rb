@@ -13,8 +13,8 @@ Redmine::Plugin.register :redmine_password_tool do
 
             }
 
-  # Menüeintrag bei Projekten
-  menu :project_menu, :password_instances, { :controller => 'password_instances', :action => 'index' }, :after => :wiki, :param => :id
+  # Menu entry in project's menu
+  menu :project_menu, :password_instances, { :controller => 'password_instances', :action => 'index' }, :after => :wiki, :param => :project_id
 
   project_module :password_instances do
     permission :pt_read,   :password_instances => [:index, :show, :data_schema]

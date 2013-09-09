@@ -5,7 +5,7 @@ en:
   label_pt_password:  password
   label_pt_select: Select
   label_pt_root: Root
-  label_pt_template: Template
+  field_password_template: Template
   label_pt_name: Name
   label_pt_passwordtool: Password Tool
   label_pt_data: Content
@@ -23,6 +23,6 @@ en:
   ## Settings
 
   ## Password Instances
-  label_pt_passwort_instance_new: New password entry
+  label_password_instance_new: New password entry
 
 

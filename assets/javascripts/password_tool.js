@@ -1,6 +1,6 @@
 function changedPasswordInstanceTemplate(select) {
 
-    form = $("#password_template_form");
+    form = $("form.password_instance_form");
 
     // Remove unwanted Elements
     form.find(".ui-dform-div-main").remove();
@@ -16,7 +16,7 @@ function changedPasswordInstanceTemplate(select) {
 
 function initPasswordInstanceForm(data) {
 
-    form = $("#password_template_form");
+    form = $("form.password_instance_form");
     form.dform(data);
     updatePasswordInstanceForm(data);
 
@@ -25,11 +25,11 @@ function initPasswordInstanceForm(data) {
 function resetPasswordInstanceForm(value) {
 
     /* disable name text input */
-    form.find("input#name").attr("disabled", value);
+    form.find("input#password_instance_name").attr("disabled", value);
     /* disable reset parent select */
     form.find("select#password_instance_parent_id").attr("disabled", value);
     if (value){
-        form.find("input#name").val("");
+        form.find("input#password_instance_name").val("");
         form.find("select#password_instance_parent_id option").removeAttr('selected');
         form.find("select#password_instance_parent_id option[value='']").attr('selected', true);
     }
@@ -37,7 +37,7 @@ function resetPasswordInstanceForm(value) {
 
 function updatePasswordInstanceForm(data) {
 
-    form = $("#password_template_form");
+    form = $("form.password_instance_form");
 
     resetPasswordInstanceForm(false);
 
@@ -79,7 +79,7 @@ function getDefinitionByName(data, name) {
 
 
 function validatePasswordInstanceFrom() {
-    form = $("#password_template_form");
+    form = $("form.password_instance_form");
     form.validate();
 }
 
@@ -97,7 +97,7 @@ function togglePasswordInstanceContent(event) {
 
         // Get JSON data
         $.ajax({
-            url: window.location.pathname +"/"+pw_instance_id+"/data_schema.js",
+            url: window.location.pathname +"/../../../password_instances/"+pw_instance_id+"/data_schema.js",
             context: $(this)
         }).done(function (data) {
                 // Add table

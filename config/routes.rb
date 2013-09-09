@@ -11,15 +11,12 @@ match 'projects/:id/password_tool/:password_instance_id', :to => 'password_insta
 =end
 
 
+# Instances
 resources :projects do
-  resources :password_instances
+  resources :password_instances, shallow: true
 end
+match 'password_instances/:id/data_schema', :to => 'password_instances#data_schema', :via => [:get]
 
 
-
-match 'projects/:id/password_tool/:password_instance_id/data_schema', :to => 'password_instances#data_schema', :via => [:get]
-
-
-#get '/', :controller => 'password_templates' #, :action => 'index'
 resources :password_templates, :only => [:index,:show]
 get 'password_templates/:id/form', :to => 'password_templates#form'
