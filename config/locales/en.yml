@@ -1,8 +1,7 @@
 en:
   ##  Allgemein
   label_password_instances: Passwords
-  label_pt_passwords: Passwords
-  label_pt_password:  password
+  label_passwort_instance: Password
   label_pt_select: Select
   label_pt_root: Root
   field_password_template: Template

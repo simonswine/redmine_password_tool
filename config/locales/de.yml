@@ -1,8 +1,7 @@
 de:
   ##  Allgemein
   label_password_instances: Passwörter
-  label_pt_passwords: Passwörter
-  label_pt_password:  Passwort
+  label_passwort_instance: Passwort
   label_pt_select: Auswählen
   label_pt_root: Wurzel
   field_password_template: Vorlage

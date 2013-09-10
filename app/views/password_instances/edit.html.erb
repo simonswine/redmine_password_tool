@@ -1,6 +1,6 @@
 <h2><%=l(:label_passwort_instance)%></h2>
 
-<%= labelled_form_for @password_instance, {:url => project_password_instances_path(@project), :html => {:class => 'password_instance_form'}}  do |f| %>
+<%= labelled_form_for @password_instance, { :html => {:class => 'password_instance_form'}}  do |f| %>
     <%= render :partial => 'form', :locals => {:f => f} %>
     <p><%= submit_tag l(:button_save) %></p>
 <% end %>

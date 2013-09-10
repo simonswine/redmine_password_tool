@@ -59,10 +59,12 @@ class PasswordInstancesController < ApplicationController
   end
 
   def update
-    @password_instance.safe_attributes = params[:password_instance]
+    @password_instance.update_attributes(params[:password_instance])
+    @password_instance.data_plain = JSON.generate(params[:password_instance]['data'])
+
     if request.put? and @password_instance.save
       flash[:notice] = l(:notice_successful_update)
-      redirect_to action: 'index'
+      redirect_to action: 'index', :project_id => @project.identifier
     else
       render :action => 'edit'
     end
