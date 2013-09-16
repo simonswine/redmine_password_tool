@@ -41,9 +41,6 @@ then
   exit 1;
 fi
 
-export CLUSTER1=" features/updater.feature features/list_with_gaps.feature features/burndown.feature features/cecilia_burndown.feature features/common.feature features/duplicate_story.feature features/extended_timelog.feature features/product_owner.feature features/release3.feature features/release_burndown.feature features/routes.feature features/scrum_master.feature features/settings.feature features/sidebar.feature features/team_member.feature features/ui.feature features/release_burndown_complex.feature"
-export CLUSTER2=" features/shared-versions-burndown.feature features/shared-versions-chief_product_owner2.feature features/shared-versions-chief_product_owner.feature features/shared-versions.feature features/shared-versions-pblpage.feature features/shared-versions-positioning.feature features/shared-versions-scrum_master-dnd.feature features/shared-versions-team_member-dnd.feature"
-
 export RAILS_ENV=test
 export IN_RBL_TESTENV=true
 
@@ -109,44 +106,9 @@ run_tests()
   if [ "$VERBOSE" = "yes" ]; then
     TRACE=--trace
   fi
-  # patch fixtures
-  bundle exec rake redmine:password_tool:prepare_fixtures $TRACE
 
-  # run cucumber
-  if [ ! -n "${CUCUMBER_TAGS}" ];
-  then
-    CUCUMBER_TAGS="--tags ~@optional"
-  fi
+  bundle exec rake $TRACE redmine:plugins:test NAME=redmine_password_tool
 
-  if [ ! -n "${CUCUMBER_FLAGS}" ]; then
-    if [ "$VERBOSE" = "yes" ]; then
-      export CUCUMBER_FLAGS="${CUCUMBER_TAGS}"
-    else
-      export CUCUMBER_FLAGS="--format progress ${CUCUMBER_TAGS}"
-    fi
-  fi
-
-  FEATURE=$1
-  if [ ! -e "$FEATURE" ]; then
-    FEATURE="features/$FEATURE.feature"
-  fi
-  if [ ! -e "$FEATURE" ]; then
-    FEATURE=""
-  fi
-
-  if [ -n "$CLUSTER" ]; then
-    eval TESTS="\$$CLUSTER"
-    LOG="$REDMINE_ROOT/cuke.cluster.log"
-  elif [ -e "$FEATURE" ]; then
-    TESTS="$FEATURE"
-    LOG=`basename $FEATURE`
-    LOG="$REDMINE_ROOT/cuke.$LOG.log"
-  else
-    TEST="features"
-    LOG=$REDMINE_ROOT/cuke.log
-  fi
-
-  script -e -c "bundle exec cucumber $CUCUMBER_FLAGS $TESTS" -f $LOG
 }
 
 uninstall()
@@ -254,6 +216,7 @@ bundle exec rake $MIGRATE_PLUGINS $TRACE
 
 # install password_tool
 if [ "$VERBOSE" = "yes" ]; then echo 'Generate Password Tool Secret install'; fi
+rm -f $PATH_TO_PLUGINS/redmine_password_tool/config/password_tool_secret.yml	
 bundle exec rake redmine:password_tool:create_secret $TRACE
 
 if [ "$VERBOSE" = "yes" ]; then echo 'Done!'; fi
