@@ -6,6 +6,8 @@ class PasswordTemplate < ActiveRecord::Base
   has_many :password_instances, :dependent => :destroy
 
   validates :name, presence: true, uniqueness: true
+  validates_format_of :name, :with => /\A[a-z0-9\-_]+\Z/, :message => l(:validate_only_small_alphanumeric_underscore)
+
 
   def schema_obj
     PasswordSchema.new(schema)

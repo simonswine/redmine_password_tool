@@ -15,6 +15,7 @@ class PasswordInstance < ActiveRecord::Base
 
   # Needs project_id
   validates :project, :presence => true
+  validates :password_template, :presence => true
 
   # data validation
   validate :validate_data
@@ -49,10 +50,11 @@ class PasswordInstance < ActiveRecord::Base
   end
 
   def validate_data
-
-    result = password_template.data_validate(data_plain)
-    if not (result['errors'].length == 1 and result['errors']['__global'].length == 0)
-      errors.add(:data_plain, result['errors'])
+    if not password_template.nil?
+      result = password_template.data_validate(data_plain)
+      if not (result['errors'].length == 1 and result['errors']['__global'].length == 0)
+        errors.add(:data_plain, result['errors'])
+      end
     end
   end
 

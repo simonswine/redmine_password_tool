@@ -15,13 +15,29 @@ class PasswordSchemaField
   validates :name, :type, presence: true
   validates_format_of :name, :with => /\A[a-z0-9_]+\Z/, :message => "l(:validate_only_small_alphanumeric_underscore)"
   validates :type, inclusion: { in: ['text','password','url','email','number'] }
-
+  validate :valid_schema
 
 
   def initialize(params={})
-    
+
+    self.schema=params
+
+  end
+
+  def schema
+    @schema
+  end
+
+  def schema=(params)
+
+    @schema = params
+
     if params.is_a? String
-      params =  JSON.parse(params)
+      begin
+        params =  JSON.parse(params)
+      rescue JSON::ParserError
+        return
+      end
     end
 
     if params.is_a? Hash
@@ -32,14 +48,47 @@ class PasswordSchemaField
 
       end
     end
+
+
+  end
+
+  def valid_schema
+
+    my_schema = @schema
+
+    if my_schema.nil?
+      return
+    end
+
+    if my_schema.is_a? String
+      begin
+        my_schema =  JSON.parse(my_schema)
+      rescue JSON::ParserError
+        errors.add(:schema, 'json_unparseable')
+        return
+      end
+    end
+
+    if not my_schema.is_a? Hash
+      errors.add(:schema, 'schema_no_hash')
+    end
+
   end
 
   def name=(val)
-    @name = val.downcase
+    if val.nil?
+      @name = nil
+    else
+      @name = val.downcase
+    end
   end
 
   def type=(val)
-    @type = val.downcase
+    if val.nil?
+      @type = nil
+    else
+      @type = val.downcase
+    end
   end
 
   def caption
