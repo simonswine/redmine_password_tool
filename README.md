@@ -10,6 +10,14 @@
 
 ## Testing
 
+### Summary 
+
+* [![build status](https://secure.travis-ci.org/simonswine/redmine_password_tool.png)](https://travis-ci.org/simonswine/redmine_password_tool) on travis-ci.org (master branch) 
+
+
+### Test Policy
+
+
  - Everything should be covered by tests
 
 ### Prepare test database

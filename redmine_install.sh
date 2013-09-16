@@ -16,6 +16,7 @@ $//' -i $log # ^Ms at end of lines
       sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"  -i $log # ansi coloring
     fi
   done
+
 }
 
 if [[ -e "$HOME/.password_tool.rc" ]]; then
@@ -107,7 +108,7 @@ run_tests()
     TRACE=--trace
   fi
 
-  bundle exec rake $TRACE redmine:plugins:test NAME=redmine_password_tool
+  bundle exec rake redmine:password_tool:test CI=1 $TRACE
 
 }
 
@@ -181,8 +182,8 @@ sed -i -e 's=.*gem ["'\'']test-unit["'\''].*==g' ${PATH_TO_REDMINE}/Gemfile
 sed -i -e 's=.*gem ["'\'']capybara["'\''].*==g' ${PATH_TO_REDMINE}/Gemfile
 
 # install gems
-mkdir -p $WORKSPACE/bundle
-bundle install --path $WORKSPACE/bundle
+mkdir -p $REDMINE_ROOT/../bundle
+bundle install --path $REDMINE_ROOT/../bundle
 
 if [ "$DBTYPE" = "mysql" -a "$RUBYVER" = "1.8" ] ; then
   bundle exec gem install -v=2.8.1 mysql
