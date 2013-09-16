@@ -1,3 +1,5 @@
+require 'password_instance'
+
 desc <<-END_DESC
 Manage Redmine Password Tool
 
