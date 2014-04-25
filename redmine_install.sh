@@ -108,7 +108,7 @@ run_tests()
     TRACE=--trace
   fi
 
-  bundle exec rake redmine:password_tool:test CI=1 $TRACE
+  bundle exec rake redmine:plugins:test CI=1 $TRACE
 
 }
 
@@ -217,7 +217,7 @@ bundle exec rake $MIGRATE_PLUGINS $TRACE
 
 # install password_tool
 if [ "$VERBOSE" = "yes" ]; then echo 'Generate Password Tool Secret install'; fi
-rm -f $PATH_TO_PLUGINS/redmine_password_tool/config/password_tool_secret.yml	
+rm -f $PATH_TO_PLUGINS/redmine_password_tool/config/password_tool_secret.yml
 bundle exec rake redmine:password_tool:create_secret $TRACE
 
 if [ "$VERBOSE" = "yes" ]; then echo 'Done!'; fi
