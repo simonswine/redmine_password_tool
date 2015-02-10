@@ -16,8 +16,8 @@ ru:
   label_pt_hide_all: "Скрыть все"
 
   ## Permissions
-  permission_pt_read: Просматривать пароли
-  permission_pt_modify: Создавать/Редактировать/Удалять пароли
+  permission_pt_read: Просмотр паролей
+  permission_pt_modify: Создание/Редактирование/Удаление паролей
 
   ## Settings
 
