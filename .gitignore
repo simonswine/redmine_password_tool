@@ -1,3 +1,4 @@
 *~
 .project
+.idea
 config/password_tool_secret.yml

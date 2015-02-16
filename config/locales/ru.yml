@@ -1,0 +1,27 @@
+ru:
+  ##  Allgemein
+  label_password_instances: Пароли
+  label_passwort_instance: Пароль
+  label_pt_select: Выбрать
+  label_pt_root: Корень
+  field_password_template: Шаблон
+  label_pt_name: Имя
+  label_pt_passwordtool: Менеджер паролей
+  label_pt_data: Контент
+  label_pt_parent: Родительская запись
+
+  text_pt_instance_destroy_warning: "Вы уверены, что хотите удалить запись '%{value}'?"
+
+  label_pt_show_all: "Показать все"
+  label_pt_hide_all: "Скрыть все"
+
+  ## Permissions
+  permission_pt_read: Просмотр паролей
+  permission_pt_modify: Создание/Редактирование/Удаление паролей
+
+  ## Settings
+
+  ## Password Instances
+  label_password_instance_new: Создать
+
+
