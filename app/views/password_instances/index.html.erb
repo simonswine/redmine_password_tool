@@ -49,7 +49,12 @@
                 <%= link_to(l(:button_edit), { controller: "password_instances", action:"edit", id: pw_instance.id}, :class => 'icon icon-edit') %>
             <% end -%>
             <% if User.current.allowed_to?({ controller: "password_instances", action: "destroy" },@project) -%>
-                <%= link_to(l(:button_delete), { controller: "password_instances", action:"destroy", id: pw_instance.id}, :method => :delete, :class => 'icon icon-del', :confirm => l(:text_pt_instance_destroy_warning,"#{pw_instance.name} (#{pw_instance.password_template.name})")) %>
+              <%= link_to(l(:button_delete),
+                { controller: "password_instances", action:"destroy", id: pw_instance.id},
+                :method => :delete,
+                :class => 'icon icon-del',
+                :data => { :confirm => l(:text_pt_instance_destroy_warning,"#{pw_instance.name} (#{pw_instance.password_template.name})")}
+              ) %>
             <% end -%>
           </td>
         </tr>

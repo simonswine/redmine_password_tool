@@ -4,7 +4,7 @@ class PasswordInstance < ActiveRecord::Base
   belongs_to :password_template
   belongs_to :project
 
-  # TODO: Load key from file
+  attr_accessible :name, :data, :password_template_id, :parent_id
   attr_encrypted :data_plain, :key => :get_secret, :attribute => 'data_encrypted'
 
   # Unique names on project scope

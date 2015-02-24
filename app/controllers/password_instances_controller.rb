@@ -12,28 +12,7 @@ class PasswordInstancesController < ApplicationController
   before_filter :find_password_instance, :except => [ :index, :new, :create]
   before_filter :find_password_instances, :only => [ :index, :new, :create, :edit, :update ]
 
-
-
-
-  def safe_params
-
-    output = {}
-
-    ["password_template_id","parent_id","name"].each { |key|
-
-      output[key] = params[key]
-
-    }
-    output['data_plain'] = JSON.generate(params['data'])
-
-
-    output
-
-  end
-
-
   def index
-
   end
 
   def set
@@ -47,22 +26,17 @@ class PasswordInstancesController < ApplicationController
 
   # Show @password_instance's data_schema
   def data_schema
-
-
-
   end
-
 
   # Edit @password_instance
   def edit
-
   end
 
   def update
     @password_instance.update_attributes(params[:password_instance])
     @password_instance.data_plain = JSON.generate(params[:password_instance]['data'])
 
-    if request.put? and @password_instance.save
+    if @password_instance.save
       flash[:notice] = l(:notice_successful_update)
       redirect_to action: 'index', :project_id => @project.identifier
     else
@@ -81,11 +55,9 @@ class PasswordInstancesController < ApplicationController
   end
 
   def create
-
     @password_instance = PasswordInstance.new (params[:password_instance])
     @password_instance.data_plain = JSON.generate(params[:password_instance]['data'])
     @password_instance.project = @project
-
 
     if @password_instance.save
       # Save succeed
@@ -105,16 +77,7 @@ class PasswordInstancesController < ApplicationController
     end
   end
 
-
-
-
   def new
-
     @password_instance = PasswordInstance.new
-
-
-
   end
-
-
 end

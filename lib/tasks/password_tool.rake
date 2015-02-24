@@ -7,7 +7,7 @@ END_DESC
 
 require 'rspec/core/rake_task'
 
-plugin_name =  File.basename(File.expand_path(File.join(__FILE__,'..','..','..')))
+plugin_name = File.basename(File.expand_path(File.join(__FILE__,'..','..','..')))
 
 namespace :redmine do
   namespace :password_tool do
@@ -18,7 +18,7 @@ namespace :redmine do
   namespace :plugins do
     desc 'Runs the plugins rspec tests.'
     task :test => "db:test:prepare" do |t|
-      if not ENV['NAME'] || ENV['NAME'] == plugin_name
+      if ENV['NAME'].nil? || ENV['NAME'] == plugin_name
         Rake::Task["redmine:plugins:rspec"].invoke
       end
     end
