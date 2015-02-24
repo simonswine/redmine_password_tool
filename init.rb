@@ -5,7 +5,7 @@ Redmine::Plugin.register :redmine_password_tool do
   name 'Redmine Password Tool'
   author 'Christian Simon'
   description 'Integrates password management for Redmine projects'
-  version '0.0.1'
+  version '0.0.2'
   url 'http://www.former03.de'
 
   settings  :partial => 'redmine_password_tool',
