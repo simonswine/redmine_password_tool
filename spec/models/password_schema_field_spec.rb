@@ -30,7 +30,6 @@ describe PasswordSchemaField do
 
   end
 
-
   describe "DataValidations" do
 
     describe "Required" do
@@ -41,15 +40,15 @@ describe PasswordSchemaField do
 
       it "should validate" do
         @field.value = "im_not_empty"
-        @field.valid_data?.should be_true
+        @field.valid_data?.should eq(true)
       end
 
       it "should not validate" do
         @field.value = ""
-        @field.valid_data?.should_not be_true
+        @field.valid_data?.should_not eq(true)
 
         @field.value = nil
-        @field.valid_data?.should_not be_true
+        @field.valid_data?.should_not eq(true)
       end
     end
 
@@ -61,15 +60,15 @@ describe PasswordSchemaField do
 
       it "should validate" do
         @field.value = "email@provider.de"
-        @field.valid_data?.should be_true
+        @field.valid_data?.should eq(true)
 
         @field.value = "test1234@example.com"
-        @field.valid_data?.should be_true
+        @field.valid_data?.should eq(true)
       end
 
       it "should not validate" do
         @field.value = "no.at.valid-email.de"
-        @field.valid_data?.should_not be_true
+        @field.valid_data?.should_not eq(true)
       end
     end
 
@@ -81,21 +80,16 @@ describe PasswordSchemaField do
 
       it "should validate" do
         @field.value = "htTp://www.giigle.de/testme12345.php"
-        @field.valid_data?.should be_true
+        @field.valid_data?.should eq(true)
 
         @field.value = "https://ssl.giigle.de/testme12345.php"
-        @field.valid_data?.should be_true
+        @field.valid_data?.should eq(true)
       end
 
       it "should not validate" do
         @field.value = "htt://asd.simonswine.de"
-        @field.valid_data?.should_not be_true
+        @field.valid_data?.should_not eq(true)
       end
-
     end
-
-
-
   end
-
 end

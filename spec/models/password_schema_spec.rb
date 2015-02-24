@@ -99,7 +99,7 @@ describe PasswordSchema do
       form_hash = JSON.parse(form_string)
 
       form_string.is_a?(String)
-      form_hash['html'][0]['html'].is_a?(Array).should be_true
+      form_hash['html'][0]['html'].is_a?(Array).should eq(true)
       form_hash['html'][0]['html'][0].should include('type','caption','name','validate')
     end
   end

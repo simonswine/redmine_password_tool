@@ -28,7 +28,7 @@ describe PasswordTemplate do
 
     it "should create a template" do
       template = PasswordTemplate.new(params)
-      template.save.should be_true
+      template.save.should eq(true)
       template.reload
 
       params[:name].should == template.name

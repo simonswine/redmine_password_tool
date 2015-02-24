@@ -3,6 +3,8 @@ require 'json'
 class PasswordTemplate < ActiveRecord::Base
   unloadable
 
+  attr_accessible :name, :schema
+
   has_many :password_instances, :dependent => :destroy
 
   validates :name, presence: true, uniqueness: true
