@@ -1,13 +1,12 @@
 language: ruby
 env:
-  - REDMINE_VER=2.3.4 DB=mysql
-  - REDMINE_VER=2.4.5 DB=mysql
-  - REDMINE_VER=2.5.1 DB=mysql
+  - REDMINE_VER=3.0.0 DB=mysql
 notifications:
   email:
     - hosting@former03.de
 rvm:
-  - 2.0.0
+  - 2.0
+  - 2.1
 services:
   - mysql
 install: echo skip bundle install
