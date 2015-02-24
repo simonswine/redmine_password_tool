@@ -6,7 +6,7 @@
 
 ---
 
-## Todos
+## [Change log](CHANGELOG.md)
 
 ## Testing
 
